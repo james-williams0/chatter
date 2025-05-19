@@ -17,7 +17,7 @@ const Form: React.FC<FormProps> = ({ setRoom, setIdentity, setMessages }) => {
                     "Content-Type": "application/json",
                 },
             });
-
+''
             if (!response.ok) {
                 console.warn("Failed to join room:", response.statusText);
                 return;
@@ -68,7 +68,6 @@ const Form: React.FC<FormProps> = ({ setRoom, setIdentity, setMessages }) => {
         <div className="join">
             <h1>Join a Room</h1>
             <form onSubmit={handleSubmit}>
-                <label htmlFor="room">Room ID:</label>
                 <input
                     type="text"
                     id="identity"
@@ -76,7 +75,7 @@ const Form: React.FC<FormProps> = ({ setRoom, setIdentity, setMessages }) => {
                     placeholder="Your Identity"
                     required
                 />
-                <input type="text" id="room" name="room" />
+                <input type="text" id="room" name="room" placeholder="Room ID" />
                 <button>Join</button>
                 <button>Create</button>
             </form>
