@@ -1,36 +1,46 @@
-import React, { useEffect, useRef, useState } from 'react'
-import type { Message } from '../types/message'
+import React, { useEffect, useRef, useState } from "react";
+import type { Message } from "../types/message";
 
 interface ChatProps {
-    room: string
-    identity: string
-    messages: Message[]
-    setMessages: React.Dispatch<React.SetStateAction<Message[]>>
+    room: string;
+    identity: string;
+    messages: Message[];
+    setMessages: React.Dispatch<React.SetStateAction<Message[]>>;
 }
 
-const Chat: React.FC<ChatProps> = ({ room, identity, messages, setMessages }) => {
-    const [input, setInput] = useState<string>('')
-    const websocket = useRef<WebSocket | null>(null)
-    
+const Chat: React.FC<ChatProps> = ({
+    room,
+    identity,
+    messages,
+    setMessages,
+}) => {
+    const [input, setInput] = useState<string>("");
+    const websocket = useRef<WebSocket | null>(null);
+
     useEffect(() => {
         websocket.current = new WebSocket(`/ws/${room}/`);
         websocket.current.onmessage = (event) => {
             const message = JSON.parse(event.data) as Message;
-            setMessages(prevMessages => [...prevMessages, message]);
-        }
+            setMessages((prevMessages) => [...prevMessages, message]);
+        };
         return () => {
             websocket.current?.close();
-        }
-    }, [room])
+        };
+    }, [room]);
 
     const send = (e: React.FormEvent) => {
-        e.preventDefault()
+        e.preventDefault();
         if (websocket.current) {
-            websocket.current.send(JSON.stringify({ sender: identity, content: input }))
-            setMessages(prevMessages => [...prevMessages, { sender: identity, content: input }])
-            setInput('')
+            websocket.current.send(
+                JSON.stringify({ sender: identity, content: input }),
+            );
+            setMessages((prevMessages) => [
+                ...prevMessages,
+                { sender: identity, content: input },
+            ]);
+            setInput("");
         }
-    }
+    };
 
     return (
         <>
@@ -52,7 +62,7 @@ const Chat: React.FC<ChatProps> = ({ room, identity, messages, setMessages }) =>
                 <button type="submit">Send</button>
             </form>
         </>
-    )
-}
+    );
+};
 
-export { Chat }
+export { Chat };

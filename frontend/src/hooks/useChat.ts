@@ -1,10 +1,10 @@
-import { useState } from "react"
-import type { Message } from "../types/message"
+import { useState } from "react";
+import type { Message } from "../types/message";
 
 const useChat = () => {
-    const [room, setRoom] = useState<string | null>(null)
-    const [identity, setIdentity] = useState<string>('')
-    const [messages, setMessages] = useState<Message[]>([])
+    const [room, setRoom] = useState<string | null>(null);
+    const [identity, setIdentity] = useState<string>("");
+    const [messages, setMessages] = useState<Message[]>([]);
 
     return {
         room,
@@ -13,7 +13,7 @@ const useChat = () => {
         setIdentity,
         messages,
         setMessages,
-    }
-}
+    };
+};
 
-export { useChat }
+export { useChat };

@@ -3,4 +3,4 @@ interface Message {
     content: string;
 }
 
-export type { Message }
+export type { Message };
