@@ -1,9 +1,12 @@
+import type { Message } from "../types/message"
+
 interface FormProps {
     setRoom: (room: string) => void
     setName: (name: string) => void
+    setMessages: (messages: Message[]) => void
 }
 
-function Form({ setRoom, setName }: FormProps) {
+function Form({ setRoom, setName, setMessages }: FormProps) {
     async function join(formData: FormData) {
         const roomId = formData.get('room') as string
         const name = formData.get('name') as string
@@ -22,6 +25,7 @@ function Form({ setRoom, setName }: FormProps) {
 
             setRoom(roomId)
             setName(name)
+            setMessages(await response.json() as Message[])
         }
         catch (error) {
             console.error('Error joining room:', error)

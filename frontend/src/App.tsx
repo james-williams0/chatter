@@ -12,7 +12,10 @@ function App() {
   return (
     <>
       { room ? (
-        <Form setRoom={setRoom} setName={setName} />
+        <Form
+          setRoom={setRoom}
+          setName={setName}
+          setMessages={setMessages} />
       ) : (
         <Chat />
       )}
