@@ -1,4 +1,3 @@
-import "./App.css";
 import { Form } from "./components/form";
 import { Chat } from "./components/chat";
 import { useChat } from "./hooks/useChat";
