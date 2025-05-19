@@ -5,7 +5,7 @@ interface ChatProps {
     room: string
     identity: string
     messages: Message[]
-    setMessages: (messages: Message[]) => void
+    setMessages: React.Dispatch<React.SetStateAction<Message[]>>
 }
 
 const Chat: React.FC<ChatProps> = ({ room, identity, messages, setMessages }) => {
@@ -16,7 +16,7 @@ const Chat: React.FC<ChatProps> = ({ room, identity, messages, setMessages }) =>
         websocket.current = new WebSocket(`/ws/${room}/`);
         websocket.current.onmessage = (event) => {
             const message = JSON.parse(event.data) as Message;
-            setMessages([...messages, message]);
+            setMessages(prevMessages => [...prevMessages, message]);
         }
         return () => {
             websocket.current?.close();
@@ -27,7 +27,7 @@ const Chat: React.FC<ChatProps> = ({ room, identity, messages, setMessages }) =>
         e.preventDefault()
         if (websocket.current) {
             websocket.current.send(JSON.stringify({ sender: identity, content: input }))
-            setMessages([...messages, { sender: identity, content: input }])
+            setMessages(prevMessages => [...prevMessages, { sender: identity, content: input }])
             setInput('')
         }
     }
