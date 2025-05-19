@@ -1,23 +1,31 @@
-import { useState } from 'react'
 import './App.css'
-import Form from './components/form'
-import Chat from './components/chat'
-import type { Message } from './types/message'
+import { Form } from './components/form'
+import { Chat } from './components/chat'
+import { useChat } from './hooks/useChat'
 
 function App() {
-  const [room, setRoom] = useState<string | null>(null)
-  const [name, setName] = useState<string>('')
-  const [messages, setMessages] = useState<Message[]>([])
+  const {
+    room,
+    setRoom,
+    identity,
+    setIdentity,
+    messages,
+    setMessages,
+  } = useChat()
 
   return (
     <>
-      { room ? (
+      { room === null ? (
         <Form
           setRoom={setRoom}
-          setName={setName}
+          setIdentity={setIdentity}
           setMessages={setMessages} />
       ) : (
-        <Chat />
+        <Chat
+          room={room}
+          identity={identity}
+          messages={messages}
+          setMessages={setMessages} />
       )}
     </>
   )

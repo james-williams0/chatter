@@ -2,14 +2,14 @@ import type { Message } from "../types/message"
 
 interface FormProps {
     setRoom: (room: string) => void
-    setName: (name: string) => void
+    setIdentity: (name: string) => void
     setMessages: (messages: Message[]) => void
 }
 
-function Form({ setRoom, setName, setMessages }: FormProps) {
+const Form: React.FC<FormProps> = ({ setRoom, setIdentity, setMessages }) => {
     async function join(formData: FormData) {
         const roomId = formData.get('room') as string
-        const name = formData.get('name') as string
+        const identity = formData.get('identity') as string
         try {
             const response = await fetch(`/api/get-messages/${roomId}`, {
                 method: 'GET',
@@ -24,7 +24,7 @@ function Form({ setRoom, setName, setMessages }: FormProps) {
             }
 
             setRoom(roomId)
-            setName(name)
+            setIdentity(identity)
             setMessages(await response.json() as Message[])
         }
         catch (error) {
@@ -33,7 +33,7 @@ function Form({ setRoom, setName, setMessages }: FormProps) {
     }
 
     async function create(formData: FormData) {
-        const name = formData.get('name') as string
+        const identity = formData.get('identity') as string
         try {
             const response = await fetch('/api/create-room', {
                 method: 'POST',
@@ -49,25 +49,35 @@ function Form({ setRoom, setName, setMessages }: FormProps) {
 
             const data = await response.json()
             setRoom(data.room)
-            setName(name)
+            setIdentity(identity)
         }
         catch (error) {
             console.error('Error creating room:', error)
         }
     }
 
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault()
+        const data = new FormData(e.currentTarget)
+        if (data.get('room')) {
+            join(data)
+        } else {
+            create(data)
+        }
+    }
+
     return (
         <div className="join">
             <h1>Join a Room</h1>
-            <form>
+            <form onSubmit={handleSubmit}>
                 <label htmlFor="room">Room ID:</label>
-                <input type="text" id="name" name="name" placeholder="Your Identity" required />
-                <input type="text" id="room" name="room" required />
-                <button formAction={join}>Join</button>
-                <button formAction={create}>Create</button>
+                <input type="text" id="identity" name="identity" placeholder="Your Identity" required />
+                <input type="text" id="room" name="room" />
+                <button>Join</button>
+                <button>Create</button>
             </form>
         </div>
     )
 }
 
-export default Form
+export { Form }
