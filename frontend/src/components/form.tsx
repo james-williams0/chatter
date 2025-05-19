@@ -2,7 +2,7 @@ import type { Message } from "../types/message";
 
 interface FormProps {
     setRoom: (room: string) => void;
-    setIdentity: (name: string) => void;
+    setIdentity: (identity: string) => void;
     setMessages: (messages: Message[]) => void;
 }
 
@@ -17,7 +17,7 @@ const Form: React.FC<FormProps> = ({ setRoom, setIdentity, setMessages }) => {
                     "Content-Type": "application/json",
                 },
             });
-''
+
             if (!response.ok) {
                 console.warn("Failed to join room:", response.statusText);
                 return;
@@ -75,7 +75,12 @@ const Form: React.FC<FormProps> = ({ setRoom, setIdentity, setMessages }) => {
                     placeholder="Your Identity"
                     required
                 />
-                <input type="text" id="room" name="room" placeholder="Room ID" />
+                <input
+                    type="text"
+                    id="room"
+                    name="room"
+                    placeholder="Room ID"
+                />
                 <button>Join</button>
                 <button>Create</button>
             </form>

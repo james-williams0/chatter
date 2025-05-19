@@ -10,7 +10,9 @@ h1 {
     color: #e0e0e0;
 }
 
-.join, form, .chat {
+.join,
+form,
+.chat {
     background: #232323;
     border-radius: 8px;
     padding: 1.5rem;
