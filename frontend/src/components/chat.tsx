@@ -26,7 +26,7 @@ const Chat: React.FC<ChatProps> = ({
         return () => {
             websocket.current?.close();
         };
-    }, [room]);
+    }, [room, setMessages]);
 
     const send = (e: React.FormEvent) => {
         e.preventDefault();

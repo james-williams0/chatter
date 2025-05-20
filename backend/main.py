@@ -43,17 +43,17 @@ app.add_middleware(
 )
 
 @app.get("/")
-async def root():
+async def root() -> dict[str, str]:
     return {"message": "Hello World"}
 
 @app.post("/create-room/", status_code=status.HTTP_201_CREATED)
-async def create_room():
+async def create_room() -> dict[str, str]:
     room_id: UUID = uuid.uuid4()
     rooms[room_id] = Room(room_id)
     return {"room": str(room_id)}
 
 @app.get("/get-messages/{room_id}", status_code=status.HTTP_200_OK)
-async def get_messages(room_id: UUID):
+async def get_messages(room_id: UUID) -> list[dict[str, str]] | JSONResponse:
     room: Room | None = rooms.get(room_id)
     if room:
         return [vars(message) for message in room.get_messages()]
@@ -63,7 +63,7 @@ async def get_messages(room_id: UUID):
         content={"message": "Room not found"})
 
 @app.websocket("/ws/{room_id}/")
-async def websocket_endpoint(new_client: WebSocket, room_id: UUID):
+async def websocket_endpoint(new_client: WebSocket, room_id: UUID) -> None:
     await new_client.accept()
     room: Room | None = rooms.get(room_id)
     if not room:
